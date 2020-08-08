@@ -14,7 +14,7 @@ import hashlib
 
 
 
-DEBUG = True
+DEBUG = False
 
 def debug(stuff):
     if DEBUG:
@@ -105,7 +105,7 @@ def hashImage(JSONfilename):
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
-    #debug(imgArr)
+    debug(imgArr)
     n = 0
     questionableString = ""
     while n < len(imgArr):
