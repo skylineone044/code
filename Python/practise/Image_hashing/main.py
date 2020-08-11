@@ -114,12 +114,39 @@ def hashImage(JSONfilename):
         questionableString += hashed
         n += 1
     return questionableString
-
+"""
 data = hashImage("hello.json")
-#with open("hashedIMG.json", "a+") as f:
-#    f.write(data)
+with open("hashedIMG.json", "a+") as f:
+    f.write(data)
+"""
+
+def splitImage(JSONfilename):
+    with open(JSONfilename, "r") as f:
+        data = f.read()
+    chunks = len(data)
+    chunkSize = 64
+    listOfHash = ([data[i:i+chunkSize] for i in range(0, chunks, chunkSize)])
+    debug(listOfHash)
+    return listOfHash
 
 
+#splitImage("hashedIMG.json")
+
+def decipherImage(JSONfilename):
+    imgFile = splitImage(JSONfilename)
+    i = 0
+    decipheredRGB = ""
+    with open("dict.json", "r") as f:
+        cheatSheet = f.read()
+        cheatSheet = json.loads(cheatSheet)
+    while i < len(imgFile):
+        char = imgFile[i]
+        decipheredRGB += cheatSheet[char]
+        i += 1
+    debug(decipheredRGB)
+
+
+#decipherImage("hashedIMG.json")
 
 #myData = getRGBvalues("test.jpg")
 #saveRGBvalues("hello.json", myData)
