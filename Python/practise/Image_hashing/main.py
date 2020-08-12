@@ -8,8 +8,9 @@ import hashlib
 #   Need to store image's w and h in image's json file some way
 #   Maybe even the metadata(last modified, size and interesting shit)
 #       -save the JSON of img and a txt of metadata to img's folder
-#   split hashed chars at each line to make de-cyphering it easier
-#   also add salt to each char
+# DONE  split hashed chars at each line to make de-cyphering it easier
+# XD  also add salt to each char <- Fuck that shit all my homies hate salt
+#   strip deciphered ndarrray of "s (indexes 0 and -1)
 
 
 
@@ -144,6 +145,29 @@ def decipherImage(JSONfilename):
         decipheredRGB += cheatSheet[char]
         i += 1
     debug(decipheredRGB)
+    decipheredRGB.replace('"', "")              # important not sure if works
+    decipheredRGB = np.asarray(decipheredRGB)
+    return decipheredRGB
+
+
+#data = decipherImage("hashedIMG.json")
+
+#with open("asd.json", "a+") as f:
+
+
+def save(pixArray):
+    with open("JSONfilename.json", "a+") as f:
+        data = pixArray.tolist()
+
+        json.dump(data, codecs.open("JSONfilename.json", 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
+
+#save(data)
+
+makeImage("JSONfilename.json").show()
+
+#show(decipherImage("hashedIMG.json"))
+
+# print(type(decipherImage("hashedIMG.json")))
 
 
 #decipherImage("hashedIMG.json")
