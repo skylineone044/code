@@ -52,6 +52,10 @@ def getRGBdata(imageName):
 def getRGBvalues(picture):
     """
     getting image as a numpy array of pixel values and returning that array
+        Args:
+            literal image file as a string eg.: C\\ImagesOfCats\\cat.png
+        Returns:
+            nparray of pixels' rgb values
     """
     im = Image.open(picture)
     pixArray = np.asarray(im)
@@ -62,6 +66,10 @@ def saveRGBvalues(JSONfilename, pixArray):
     """
     converting the numpy array of pixels to a storeable format
     to save it in a JSON file.
+        Args:
+            -JSONfilename - name of the json file that will be created
+            -pixArray - nparray of rgb values
+
     """
     with open(JSONfilename, "a+") as f:
         data = pixArray.tolist()
@@ -69,6 +77,14 @@ def saveRGBvalues(JSONfilename, pixArray):
 
 
 def makeImage(JSONfilename):
+    """
+    Opens JSONfilename and returns the literal picture
+
+        Args:
+            Json file containing an nparray of pixel values
+        Returns:
+            the picture in memory. can show and save it
+    """
     obj_text = codecs.open(JSONfilename, 'r', encoding='utf-8').read()
     b_new = json.loads(obj_text)
     img = np.array(b_new)
@@ -78,6 +94,12 @@ def makeImage(JSONfilename):
 
 
 def makeSalt():
+    """
+    UNUSED!
+    makes a salt to further strenghten the decipheredRGB
+        Returns:
+            5 character long string of random content(see saltList)
+    """
     saltList = [
                 "q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "a",
                 "s", "d", "f", "g", "h", "j", "k", "l", "y", "x", "c",
@@ -115,11 +137,11 @@ def hashImage(JSONfilename):
         questionableString += hashed
         n += 1
     return questionableString
-"""
-data = hashImage("hello.json")
-with open("hashedIMG.json", "a+") as f:
-    f.write(data)
-"""
+
+# data = hashImage("hello.json")
+# with open("hashedIMG.json", "a+") as f:
+#     f.write(data)
+
 
 def splitImage(JSONfilename):
     with open(JSONfilename, "r") as f:
@@ -145,7 +167,7 @@ def decipherImage(JSONfilename):
         decipheredRGB += cheatSheet[char]
         i += 1
     debug(decipheredRGB)
-    decipheredRGB.replace('"', "")              # important not sure if works
+    decipheredRGB.replace('"', "")              # important, not sure if works
     decipheredRGB = np.asarray(decipheredRGB)
     return decipheredRGB
 
@@ -158,7 +180,6 @@ def decipherImage(JSONfilename):
 def save(pixArray):
     with open("JSONfilename.json", "a+") as f:
         data = pixArray.tolist()
-
         json.dump(data, codecs.open("JSONfilename.json", 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
 
 #save(data)

@@ -1,6 +1,6 @@
 #!usr/bin/env python
-from registration_system.salting import *
-from registration_system.cipher import *
+from salting import *
+from cipher import *
 from PyQt5 import uic, QtWidgets
 from _datetime import datetime
 from datetime import date
