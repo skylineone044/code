@@ -12,3 +12,33 @@ binary search tree
 - goto line 9
 - repeat until name is found
 """
+
+nev = input("Név: ")
+szuletesi_ev = int(input("Születési év: "))
+
+
+
+def felnott (szuletesi_ev: int):
+    eletkor = 2020 - szuletesi_ev
+    if eletkor >= 18:
+        return True
+    else:
+        return False
+
+
+def parosSzam(szam: int):
+    if szam % 2 == 0:
+        return True
+    else:
+        return False
+
+
+if felnott(szuletesi_ev):
+    print(nev + " idosebb mint 18")
+    if parosSzam(szuletesi_ev):
+        print(nev, "eletkora paros")
+    else:
+        print(nev, "eletkora paratlan")
+else:
+    print(nev + " fiatalabb mint 18")
+
