@@ -11,6 +11,8 @@ import hashlib
 # DONE  split hashed chars at each line to make de-cyphering it easier
 # XD  also add salt to each char <- Fuck that shit all my homies hate salt
 #   strip deciphered ndarrray of "s (indexes 0 and -1)
+#   a bug occours when reading and/or saving rgb data as a string. need to
+#   convert it to nparray
 
 
 
@@ -120,11 +122,6 @@ def makeSalt():
 
 
 def hashImage(JSONfilename):
-    """
-    obj_text = codecs.open(JSONfilename, 'r', encoding='utf-8').read()
-    b_new = json.loads(obj_text)
-    imgArr = np.array(b_new)
-    """
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
@@ -167,7 +164,7 @@ def decipherImage(JSONfilename):
         decipheredRGB += cheatSheet[char]
         i += 1
     debug(decipheredRGB)
-    decipheredRGB.replace('"', "")              # important, not sure if works
+    #decipheredRGB.strip('"')             # important, not sure if works
     decipheredRGB = np.asarray(decipheredRGB)
     return decipheredRGB
 
@@ -184,7 +181,7 @@ def save(pixArray):
 
 #save(data)
 
-makeImage("JSONfilename.json").show()
+#makeImage("JSONfilename.json").show()
 
 #show(decipherImage("hashedIMG.json"))
 
