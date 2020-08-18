@@ -3,6 +3,7 @@ import PIL.ImageOps
 import json, codecs
 import numpy as np
 import hashlib
+import os
 
 # TODO
 #   Need to store image's w and h in image's json file some way
@@ -17,41 +18,15 @@ import hashlib
 
 
 
-DEBUG = False
+DEBUG = True
 
 def debug(stuff):
     if DEBUG:
         print(stuff)
 
 
-def getRGBdata(imageName):
-    """
-    UNUSED!
-    function to open an image (passed in as a str.) and get every pixel's
-    RGB value. returns a list with all the values
-    """
-    im = Image.open(imageName)
-    pic = im.load()
-    lst = []
-    x = 0
-    y = 0
-    width = im.size[0]
-    height = im.size[1]
-    print(width)
-    print(height)
-    while y < height:
-        x = 0
-        while x < width:
-            pix = pic[x, y]
-            lst.append(pix)
-            x += 1
-            debug(x)
-        y += 1
-        debug(y)
-    return lst
-
-
 def getRGBvalues(picture):
+    debug("getting rgb values started")
     """
     getting image as a numpy array of pixel values and returning that array
         Args:
@@ -65,6 +40,7 @@ def getRGBvalues(picture):
 
 
 def saveRGBvalues(JSONfilename, pixArray):
+    debug("saving rgb values started")
     """
     converting the numpy array of pixels to a storeable format
     to save it in a JSON file.
@@ -79,6 +55,7 @@ def saveRGBvalues(JSONfilename, pixArray):
 
 
 def makeImage(JSONfilename):
+    debug("making image started")
     """
     Opens JSONfilename and returns the literal picture
 
@@ -88,6 +65,7 @@ def makeImage(JSONfilename):
             the picture in memory. can show and save it
     """
     obj_text = codecs.open(JSONfilename, 'r', encoding='utf-8').read()
+    obj_text = obj_text.replace('"', "")
     b_new = json.loads(obj_text)
     img = np.array(b_new)
     pic = Image.fromarray((img * 255).astype(np.uint8))
@@ -95,37 +73,11 @@ def makeImage(JSONfilename):
     return pic
 
 
-def makeSalt():
-    """
-    UNUSED!
-    makes a salt to further strenghten the decipheredRGB
-        Returns:
-            5 character long string of random content(see saltList)
-    """
-    saltList = [
-                "q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "a",
-                "s", "d", "f", "g", "h", "j", "k", "l", "y", "x", "c",
-                "v", "b", "n", "m", "0", "1", "2", "3", "4", "5", "6",
-                "7", "8", "9"
-                ]
-    n = 0
-    salt = ""
-    while n < 5:
-        num = random.randint(0, 1)
-        char = random.choice(saltList)
-        if num == 0:
-            char = char.upper()
-        salt + char
-        n += 1
-        debug(salt)
-    return salt
-
-
 def hashImage(JSONfilename):
+    debug("hashing image started")
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
-    debug(imgArr)
     n = 0
     questionableString = ""
     while n < len(imgArr):
@@ -135,22 +87,22 @@ def hashImage(JSONfilename):
         n += 1
     return questionableString
 
-# data = hashImage("hello.json")
-# with open("hashedIMG.json", "a+") as f:
-#     f.write(data)
+
+def saveHash(JSONfilename, hashedString):
+    debug("saving hash started")
+    with open(JSONfilename, "a+") as f:
+        f.write(hashedString)
 
 
 def splitImage(JSONfilename):
+    debug("splitting hash started")
     with open(JSONfilename, "r") as f:
         data = f.read()
     chunks = len(data)
     chunkSize = 64
     listOfHash = ([data[i:i+chunkSize] for i in range(0, chunks, chunkSize)])
-    debug(listOfHash)
     return listOfHash
 
-
-#splitImage("hashedIMG.json")
 
 def decipherImage(JSONfilename):
     imgFile = splitImage(JSONfilename)
@@ -159,19 +111,13 @@ def decipherImage(JSONfilename):
     with open("dict.json", "r") as f:
         cheatSheet = f.read()
         cheatSheet = json.loads(cheatSheet)
+    debug("deciphering hash started")
     while i < len(imgFile):
         char = imgFile[i]
         decipheredRGB += cheatSheet[char]
         i += 1
-    debug(decipheredRGB)
-    #decipheredRGB.strip('"')             # important, not sure if works
     decipheredRGB = np.asarray(decipheredRGB)
     return decipheredRGB
-
-
-#data = decipherImage("hashedIMG.json")
-
-#with open("asd.json", "a+") as f:
 
 
 def save(pixArray):
@@ -179,17 +125,10 @@ def save(pixArray):
         data = pixArray.tolist()
         json.dump(data, codecs.open("JSONfilename.json", 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
 
-#save(data)
 
-#makeImage("JSONfilename.json").show()
-
-#show(decipherImage("hashedIMG.json"))
-
-# print(type(decipherImage("hashedIMG.json")))
-
-
-#decipherImage("hashedIMG.json")
-
-#myData = getRGBvalues("test.jpg")
-#saveRGBvalues("hello.json", myData)
-#makeImage("hello.json").show()
+def removeFiles(filenamesList):
+    n = 0
+    while n < len(filenamesList):
+        os.remove(filenamesList[n])
+        debug("File removed: " + filenamesList[n])
+        n += 1
