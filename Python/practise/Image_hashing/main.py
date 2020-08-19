@@ -75,6 +75,14 @@ def makeImage(JSONfilename):
 
 def hashImage(JSONfilename):
     debug("hashing image started")
+    """
+    Goes through JSONfilename and hashes each character in that file
+
+        Args:
+            Json file containing an nparray of pixel values
+        Returns:
+            Long ass string containing the hash of each character(not divided)
+    """
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
@@ -96,6 +104,14 @@ def saveHash(JSONfilename, hashedString):
 
 def splitImage(JSONfilename):
     debug("splitting hash started")
+    """
+    splits the hashed string into chunkSize sized parts to "decipher"
+
+        Args:
+            Json file containing the hash of a stringified nparray(letter by letter)
+        Returns:
+            A list containing each character's hash as an element
+    """
     with open(JSONfilename, "r") as f:
         data = f.read()
     chunks = len(data)
@@ -105,13 +121,22 @@ def splitImage(JSONfilename):
 
 
 def decipherImage(JSONfilename):
+    debug("deciphering hash started")
+    """
+    compares the divided hashes of the nparray to the dict.json and replaces
+    the hash with the corresponding character
+
+        Args:
+            Json file containing the hash of a stringified nparray(letter by letter)
+        Returns:
+            An nparray of the deciphered rgb values
+    """
     imgFile = splitImage(JSONfilename)
     i = 0
     decipheredRGB = ""
     with open("dict.json", "r") as f:
         cheatSheet = f.read()
         cheatSheet = json.loads(cheatSheet)
-    debug("deciphering hash started")
     while i < len(imgFile):
         char = imgFile[i]
         decipheredRGB += cheatSheet[char]
@@ -127,6 +152,12 @@ def save(pixArray):
 
 
 def removeFiles(filenamesList):
+    """
+    Removes the unneccessary files left after the process is done
+
+        Args:
+            a list containing the filenames that are desired to be removed
+    """
     n = 0
     while n < len(filenamesList):
         os.remove(filenamesList[n])
