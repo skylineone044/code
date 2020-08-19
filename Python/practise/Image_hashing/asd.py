@@ -7,11 +7,11 @@ import hashlib
 
 
 def main():
-    saveRGBvalues("alap.json", getRGBvalues("test.jpg"))
-    saveHash("hashedIMG.json", hashImage("alap.json"))
-    save(decipherImage("hashedIMG.json"))
+    saveRGBvalues(getRGBvalues())
+    saveHash(hashImage())
+    save(decipherImage(HASHED_IMG))
     makeImage("JSONfilename.json").show()
-    filesToRemove = ["alap.json", "JSONfilename.json"]
-    removeFiles(filesToRemove)
+    # filesToRemove = ["alap.json", "JSONfilename.json"]
+    removeFiles(FILES_TO_DELETE)
 
 main()

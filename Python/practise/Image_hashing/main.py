@@ -14,44 +14,56 @@ import os
 #   strip deciphered ndarrray of "s (indexes 0 and -1)
 #   a bug occours when reading and/or saving rgb data as a string. need to
 #   convert it to nparray
+# figure out how to just save and just show an image
 
 
 
 
 DEBUG = True
+IMAGE = "test.jpg"
+FILES_TO_DELETE = []
+
 
 def debug(stuff):
     if DEBUG:
         print(stuff)
 
+def getImageName():
+    im = Image.open(IMAGE)
+    imageName = im.filename
+    return imageName
 
-def getRGBvalues(picture):
+
+PICNAME = getImageName()
+
+
+def getRGBvalues():
     debug("getting rgb values started")
     """
     getting image as a numpy array of pixel values and returning that array
-        Args:
-            literal image file as a string eg.: C\\ImagesOfCats\\cat.png
         Returns:
             nparray of pixels' rgb values
     """
-    im = Image.open(picture)
+    im = Image.open(PICNAME)
     pixArray = np.asarray(im)
     return pixArray
 
 
-def saveRGBvalues(JSONfilename, pixArray):
+def saveRGBvalues(pixArray):
     debug("saving rgb values started")
     """
     converting the numpy array of pixels to a storeable format
     to save it in a JSON file.
-        Args:
-            -JSONfilename - name of the json file that will be created
-            -pixArray - nparray of rgb values
 
+        Args:
+            -pixArray - nparray of rgb values
     """
-    with open(JSONfilename, "a+") as f:
+    global PART1
+    PART1 = PICNAME + "_part1.json"
+    FILES_TO_DELETE.append(PART1)
+    with open(PART1, "a+") as f:
         data = pixArray.tolist()
-        json.dump(data, codecs.open(JSONfilename, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
+        json.dump(data, codecs.open(PART1, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
 
 
 def makeImage(JSONfilename):
@@ -73,16 +85,15 @@ def makeImage(JSONfilename):
     return pic
 
 
-def hashImage(JSONfilename):
+def hashImage():
     debug("hashing image started")
     """
     Goes through JSONfilename and hashes each character in that file
 
-        Args:
-            Json file containing an nparray of pixel values
         Returns:
             Long ass string containing the hash of each character(not divided)
     """
+    JSONfilename = PART1
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
@@ -96,9 +107,11 @@ def hashImage(JSONfilename):
     return questionableString
 
 
-def saveHash(JSONfilename, hashedString):
+def saveHash(hashedString):
     debug("saving hash started")
-    with open(JSONfilename, "a+") as f:
+    global HASHED_IMG
+    HASHED_IMG = PICNAME + "_ciphered.json"
+    with open(HASHED_IMG, "a+") as f:
         f.write(hashedString)
 
 
@@ -146,9 +159,12 @@ def decipherImage(JSONfilename):
 
 
 def save(pixArray):
-    with open("JSONfilename.json", "a+") as f:
+    global Fname
+    Fname = PICNAME + "_part2.json"
+    FILES_TO_DELETE.append(Fname)
+    with open(Fname, "a+") as f:
         data = pixArray.tolist()
-        json.dump(data, codecs.open("JSONfilename.json", 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
+        json.dump(data, codecs.open(Fname, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
 
 
 def removeFiles(filenamesList):
@@ -163,3 +179,32 @@ def removeFiles(filenamesList):
         os.remove(filenamesList[n])
         debug("File removed: " + filenamesList[n])
         n += 1
+
+
+def hashAndSave():
+    """
+    hashes and saves the image. cleans up the unneccessary files
+    """
+    saveRGBvalues(getRGBvalues())
+    saveHash(hashImage())
+    save(decipherImage(HASHED_IMG))
+    removeFiles(FILES_TO_DELETE)
+
+def justShow():
+    """
+    loads the hashed json in and shows it. cleans up the unneccessary files
+    Fname needs to be selected by user not hardcoded !
+    """
+    Fname = "test.jpg_ciphered.json"
+    HASHED_IMG = PICNAME + "_ciphered.json"
+    FILES_TO_DELETE = [PICNAME + "_part2.json"]
+    save(decipherImage(HASHED_IMG))
+    makeImage(PICNAME + "_part2.json").show()
+    removeFiles(FILES_TO_DELETE)
+
+
+def main():
+    # hashAndSave()
+    # justShow()
+
+main()
