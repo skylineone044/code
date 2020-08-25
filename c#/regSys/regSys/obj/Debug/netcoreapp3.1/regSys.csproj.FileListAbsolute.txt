@@ -1,0 +1,13 @@
+F:\code\c#\regSys\regSys\bin\Debug\netcoreapp3.1\regSys.exe
+F:\code\c#\regSys\regSys\bin\Debug\netcoreapp3.1\regSys.deps.json
+F:\code\c#\regSys\regSys\bin\Debug\netcoreapp3.1\regSys.runtimeconfig.json
+F:\code\c#\regSys\regSys\bin\Debug\netcoreapp3.1\regSys.runtimeconfig.dev.json
+F:\code\c#\regSys\regSys\bin\Debug\netcoreapp3.1\regSys.dll
+F:\code\c#\regSys\regSys\bin\Debug\netcoreapp3.1\regSys.pdb
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.csprojAssemblyReference.cache
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.AssemblyInfoInputs.cache
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.AssemblyInfo.cs
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.csproj.CoreCompileInputs.cache
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.dll
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.pdb
+F:\code\c#\regSys\regSys\obj\Debug\netcoreapp3.1\regSys.genruntimeconfig.cache
