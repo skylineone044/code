@@ -1,15 +1,36 @@
-from clas import user
+from userClass import user
 import json
+from PyQt5 import uic, QtWidgets
+
+
+
+app = QtWidgets.QApplication([])
+dialog = QMessageBox()
+
+def showDialog():
+    QDialog.setWindowTitle("Login")
+
+
+
+
+call = uic.loadUi("mainUI.ui")
+
+
 
 with open("db.json", "r") as db:
     data = db.read()
     users = json.loads(data)
 
+username = ""
+password = ""
+password_check = ""
 
-me = user("geri", "asd", "asd", users)
 
-print(me.login(me.username, me.password, me.users))
+currentUser = user(username, password, password_check, users)
 
-you = user("ler", "hello", "hello", users)
+def openMain():
+    call.show()
+    app.exec_()
 
-you.register(you.username, you.password, you.password_check, users)
+
+QDialog.loginButton.clicked.connect()
