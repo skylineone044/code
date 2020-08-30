@@ -1,6 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\c#",
+    "\\c#\\regSys",
+    "\\c#\\regSys\\regSys",
+    "\\c#\\regSys\\regSys\\bin",
+    "\\c#\\regSys\\regSys\\bin\\Debug",
+    "\\c#\\regSys\\regSys\\bin\\Debug\\netcoreapp3.1",
+    "\\c#\\regSys\\regSys\\bin\\Debug\\netcoreapp3.1\\userFiles",
+    "\\Python\\practise",
+    "\\Python\\practise\\idk_smth"
   ],
+  "SelectedNode": "\\c#\\regSys\\regSys\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
