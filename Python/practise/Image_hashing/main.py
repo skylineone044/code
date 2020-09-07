@@ -20,7 +20,7 @@ import os
 
 
 DEBUG = True
-IMAGE = "test.jpg"
+IMAGE = "asd.jpg"
 FILES_TO_DELETE = []
 
 
@@ -61,7 +61,7 @@ def saveRGBvalues(pixArray):
     global PART1
     PART1 = PICNAME + "_part1.json"
     FILES_TO_DELETE.append(PART1)
-    with open(PART1, "a+") as f:
+    with open(PART1, "a+"):
         data = pixArray.tolist()
         json.dump(data, codecs.open(PART1, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
 
@@ -97,11 +97,14 @@ def hashImage():
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
+    with open("dict1.json", "r") as f:
+        cheatSheet = json.loads(f.read())
     n = 0
     questionableString = ""
     while n < len(imgArr):
-        encoded = imgArr[n].encode('utf-8')
-        hashed = hashlib.sha256(encoded).hexdigest()
+        encoded = imgArr[n]#.encode('utf-8')
+        # hashed = hashlib.sha256(encoded).hexdigest()
+        hashed = cheatSheet[encoded]
         questionableString += hashed
         n += 1
     return questionableString
@@ -128,7 +131,7 @@ def splitImage(JSONfilename):
     with open(JSONfilename, "r") as f:
         data = f.read()
     chunks = len(data)
-    chunkSize = 64
+    chunkSize = 8
     listOfHash = ([data[i:i+chunkSize] for i in range(0, chunks, chunkSize)])
     return listOfHash
 
@@ -162,12 +165,12 @@ def save(pixArray):
     global Fname
     Fname = PICNAME + "_part2.json"
     FILES_TO_DELETE.append(Fname)
-    with open(Fname, "a+") as f:
+    with open(Fname, "a+"):
         data = pixArray.tolist()
         json.dump(data, codecs.open(Fname, 'w', encoding='utf-8'), separators=(',', ':'), sort_keys=True)
 
 
-def removeFiles(filenamesList):
+def cleanUp(filenamesList):
     """
     Removes the unneccessary files left after the process is done
 
@@ -188,7 +191,7 @@ def hashAndSave():
     saveRGBvalues(getRGBvalues())
     saveHash(hashImage())
     save(decipherImage(HASHED_IMG))
-    removeFiles(FILES_TO_DELETE)
+    cleanUp(FILES_TO_DELETE)
 
 def justShow():
     """
@@ -200,11 +203,11 @@ def justShow():
     FILES_TO_DELETE = [PICNAME + "_part2.json"]
     save(decipherImage(HASHED_IMG))
     makeImage(PICNAME + "_part2.json").show()
-    removeFiles(FILES_TO_DELETE)
+    cleanUp(FILES_TO_DELETE)
 
 
 def main():
-    # hashAndSave()
+    hashAndSave()
     # justShow()
 
 main()

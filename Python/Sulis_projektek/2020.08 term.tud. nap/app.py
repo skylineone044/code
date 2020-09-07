@@ -16,7 +16,7 @@ binary search tree
 
 
 
-
+"""
 nev = input("Név: ")
 szuletesi_ev = int(input("Születési év: "))
 eletkor = 2020 - szuletesi_ev
@@ -43,3 +43,5 @@ if felnott(eletkor):
         print(nev, "eletkora paratlan")
 else:
     print(nev + " fiatalabb mint 18")
+"""
+
