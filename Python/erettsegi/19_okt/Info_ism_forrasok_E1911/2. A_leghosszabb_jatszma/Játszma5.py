@@ -57,4 +57,7 @@ def feladat5():
         n += 1
     return 0
 
-feladat5()
+feladat5() # nem a kert feladat
+
+class Játék:
+    def __init__(self, állás, adogatoNev, fogadoNev, ):

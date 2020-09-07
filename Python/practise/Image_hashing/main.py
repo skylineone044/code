@@ -1,3 +1,4 @@
+from timeit import default_timer as timer
 from PIL import Image
 import PIL.ImageOps
 import json, codecs
@@ -20,7 +21,7 @@ import os
 
 
 DEBUG = True
-IMAGE = "asd.jpg"
+IMAGE = "test.jpg"
 FILES_TO_DELETE = []
 
 
@@ -188,26 +189,35 @@ def hashAndSave():
     """
     hashes and saves the image. cleans up the unneccessary files
     """
+    timerStart = timer()
     saveRGBvalues(getRGBvalues())
     saveHash(hashImage())
     save(decipherImage(HASHED_IMG))
     cleanUp(FILES_TO_DELETE)
+    timerEnd = timer()
+    runTime = timerEnd - timerStart
+    debug("Runtime: " + str(runTime)[:6])
 
 def justShow():
     """
     loads the hashed json in and shows it. cleans up the unneccessary files
     Fname needs to be selected by user not hardcoded !
     """
+    timerStart = timer()
     Fname = "test.jpg_ciphered.json"
     HASHED_IMG = PICNAME + "_ciphered.json"
     FILES_TO_DELETE = [PICNAME + "_part2.json"]
     save(decipherImage(HASHED_IMG))
     makeImage(PICNAME + "_part2.json").show()
     cleanUp(FILES_TO_DELETE)
+    timerEnd = timer()
+    runTime = timerEnd - timerStart
+
+    debug("Runtime: " + str(runTime)[:6])
 
 
 def main():
-    hashAndSave()
-    # justShow()
+    # hashAndSave()
+    justShow()
 
 main()
