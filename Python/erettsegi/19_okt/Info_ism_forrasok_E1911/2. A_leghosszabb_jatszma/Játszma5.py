@@ -31,4 +31,30 @@ def feladat4():
 print("Feladat 4: adogato ", str(feladat4()) + "%-ban nyerte meg a labdameneteket")
 
 def feladat5():
-   pass 
+    n = 0
+    adogato = 0
+    fogado = 0
+    fogado_win = 0
+    adogato_win = 0
+    while n < len(labdamenetek):
+        element = labdamenetek[n]
+        if element == "A":
+            adogato += 1
+        else:
+            fogado += 1
+        if fogado == 4:
+            fogado_win += 1
+            hanyadik_jatek = fogado_win + adogato_win
+            print(str(hanyadik_jatek) + ". jatek | gyozets: fogado (" + str(fogado) + ":" + str(adogato) + ")" )
+            fogado = 0
+        elif adogato == 4:
+            adogato_win += 1
+            hanyadik_jatek = fogado_win + adogato_win
+            print(str(hanyadik_jatek) + ". jatek | gyozets: adogato (" + str(fogado) + ":" + str(adogato) + ")" )
+            adogato = 0
+        else:
+            pass
+        n += 1
+    return 0
+
+feladat5()
