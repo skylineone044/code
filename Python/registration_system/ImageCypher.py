@@ -1,4 +1,5 @@
 from timeit import default_timer as timer
+from main import imageName
 from PIL import Image
 import PIL.ImageOps
 import json, codecs
@@ -7,21 +8,18 @@ import hashlib
 import os
 
 # TODO
-#   Need to store image's w and h in image's json file some way
-#   Maybe even the metadata(last modified, size and interesting shit)
-#       -save the JSON of img and a txt of metadata to img's folder
 # DONE  split hashed chars at each line to make de-cyphering it easier
 # XD  also add salt to each char <- Fuck that shit all my homies hate salt
 #   strip deciphered ndarrray of "s (indexes 0 and -1)
-#   a bug occours when reading and/or saving rgb data as a string. need to
-#   convert it to nparray
-# figure out how to just save and just show an image
+# DONE  a bug occours when reading and/or saving rgb data as a string. need to
+# DONE  convert it to nparray
+# DONE figure out how to just save and just show an image
 
 
 
 
 DEBUG = True
-IMAGE = "test.jpg"
+IMAGE = imageName()
 FILES_TO_DELETE = []
 
 
@@ -29,13 +27,13 @@ def debug(stuff):
     if DEBUG:
         print(stuff)
 
-def getImageName():
-    im = Image.open(IMAGE)
+def getImageName(imageLocation):
+    im = Image.open(imageLocation)
     imageName = im.filename
     return imageName
 
 
-PICNAME = getImageName()
+PICNAME = getImageName(IMAGE)
 
 
 def getRGBvalues():
@@ -98,7 +96,7 @@ def hashImage():
     with open(JSONfilename, "r") as f:
         imgArr = f.read()
     imgArr = str(imgArr)
-    with open("dict1.json", "r") as f:
+    with open("cypherDict.json", "r") as f:
         cheatSheet = json.loads(f.read())
     n = 0
     questionableString = ""
@@ -151,7 +149,7 @@ def decipherImage(JSONfilename):
     imgFile = splitImage(JSONfilename)
     i = 0
     decipheredRGB = ""
-    with open("dict.json", "r") as f:
+    with open("decypherDict.json", "r") as f:
         cheatSheet = f.read()
         cheatSheet = json.loads(cheatSheet)
     while i < len(imgFile):
@@ -216,8 +214,6 @@ def justShow():
     debug("Runtime: " + str(runTime)[:6])
 
 
-def main():
-    # hashAndSave()
-    justShow()
 
-main()
+    # hashAndSave()
+    # justShow()

@@ -1,35 +1,27 @@
-#!usr/bin/env python
-from salting import *
-from cipher import *
-from PyQt5 import uic, QtWidgets
-from _datetime import datetime
-from datetime import date
-import numpy as np
-import json, codecs
+from timeit import default_timer as timer
 from PIL import Image
 import PIL.ImageOps
-from timeit import default_timer as timer
+import json, codecs
+import numpy as np
 import hashlib
-import shutil
 import os
 
-"""
-TODO:
-SOMEWHAT DONE   encorporate the encryptor and credential organiser[]
-DONE    fix newlines while updating text
-DONE    make registration work
-add dates to enries
-"""
+# TODO
+#   Need to store image's w and h in image's json file some way
+#   Maybe even the metadata(last modified, size and interesting shit)
+#       -save the JSON of img and a txt of metadata to img's folder
+# DONE  split hashed chars at each line to make de-cyphering it easier
+# XD  also add salt to each char <- Fuck that shit all my homies hate salt
+#   strip deciphered ndarrray of "s (indexes 0 and -1)
+#   a bug occours when reading and/or saving rgb data as a string. need to
+#   convert it to nparray
+# figure out how to just save and just show an image
 
-app = QtWidgets.QApplication([])
-call = uic.loadUi("main_design.ui")
-userFiles = os.getcwd() + "/userFiles/"
 
-make_database()
 
 
 DEBUG = True
-# IMAGE = "/home/gotevagyok/Desktop/asd.jpg" # call.addTextBox.toPlainText()
+IMAGE = "test.jpg"
 FILES_TO_DELETE = []
 
 
@@ -37,19 +29,13 @@ def debug(stuff):
     if DEBUG:
         print(stuff)
 
-def getImageName(imageLocation):
-    im = Image.open(imageLocation)
+def getImageName():
+    im = Image.open(IMAGE)
     imageName = im.filename
     return imageName
 
-def cypherImage():
-    global IMAGE
-    IMAGE = call.addTextBox.toPlainText()
-    global PICNAME
-    PICNAME = getImageName(IMAGE)
-    hashAndSave()
 
-# PICNAME = getImageName(IMAGE)
+PICNAME = getImageName()
 
 
 def getRGBvalues():
@@ -226,113 +212,12 @@ def justShow():
     cleanUp(FILES_TO_DELETE)
     timerEnd = timer()
     runTime = timerEnd - timerStart
+
     debug("Runtime: " + str(runTime)[:6])
 
 
-# def cypherImage():
-#     global IMAGE
-#     IMAGE = call.addTextBox.toPlainText()
-#     hashAndSave()
+def main():
+    # hashAndSave()
+    justShow()
 
-
-def add_timestamp(username):
-    personalDir = userFiles + username + "/"
-    today = date.today()
-    now = datetime.now()
-    datum = today.strftime("%B %d %Y")
-    timee = now.strftime("%H %M %S")
-    with open(personalDir + "dateFile.txt", "r") as PD:
-        lastDate = PD.readline()[-1]
-        lastDate = "".join(lastDate)
-    if datum in lastDate:
-        pass
-
-    entry = call.addTextBox.toPlainText() + "\n"
-    timestampedEntry = datum + "\n" + timee + ": " + entry
-
-
-def add_date():
-    today = date.today()
-    now = datetime.now()
-    datum = today.strftime("%B %d %Y")
-    hrs = now.strftime("%H")  #:%M:%S")
-    mins = now.strftime("%M")
-    call.dateLabel.setText(datum)
-    call.hrsLabel.setText(hrs)
-    call.minsLabel.setText(mins)
-
-
-def make_user_file(username):
-    os.mkdir(userFiles + "/" + username)
-    personalDir = userFiles + username + "/"
-    with open(personalDir + "dateFile.txt", "a+"):
-        pass
-    with open(username + "_file.json", "a+") as f:
-        f.write("[]")
-        shutil.move(username + "_file.json", userFiles + "/" + username)
-        pass
-
-
-def get_data(username):
-    entry = call.addTextBox.toPlainText() + "\n"
-    if call.timestampCheckBox.isChecked():
-        add_timestamp(username)
-    else:
-        encrypting(userFiles + usrName + "/" + usrName + "_file.json", entry)
-
-
-def dump_data():
-    cleanData = decrypting(userFiles + usrName + "/" + usrName + "_file.json")
-    call.storedTextBox.setPlainText(cleanData)
-    add_date()
-
-
-try:
-    os.mkdir("userFiles")
-except FileExistsError:
-    pass
-
-
-def register():  # function to register user
-    usrName = call.regUsrNameTextBox.text()
-    if in_database("database.json", usrName):  # checking wether username is taken
-        print("Username already taken.")
-    else:
-        password = call.regPasswTextBox.text()
-        password_check = call.regPasswTextBoxCheck.text()
-        if password == password_check:
-            pw, salt = encrypt(password)  # hashing and salting the password
-            update_database("database.json", usrName, pw, salt)  # adding user to the database
-            make_user_file(usrName)
-            print("Registration succesful!")
-        else:
-            print("Inconsistent passwords.")
-
-
-def login():
-    global usrName
-    usrName = call.usrNameTextBox.text()
-    if in_database("database.json", usrName):
-        password = call.passwTextBox.text()
-        try:
-            login_success = decrypt("database.json", usrName, password)
-        except KeyError:
-            login_success = False
-        if login_success:
-            print("Login succesful.")
-            add_date()
-            call.usernameLabel.setText(usrName)
-            call.addButton.clicked.connect(get_data)
-            call.refreshButton.clicked.connect(dump_data)
-        else:
-            print("Incorrect password.")
-    else:
-        print("User not found.")
-
-
-call.loginButton.clicked.connect(login)
-call.registerButton.clicked.connect(register)
-call.addImageButton.clicked.connect(cypherImage)
-
-call.show()
-app.exec_()
+main()
