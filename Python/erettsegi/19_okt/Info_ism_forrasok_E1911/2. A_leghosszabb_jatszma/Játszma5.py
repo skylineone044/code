@@ -47,17 +47,22 @@ def feladat5():
             hanyadik_jatek = fogado_win + adogato_win
             print(str(hanyadik_jatek) + ". jatek | gyozets: fogado (" + str(fogado) + ":" + str(adogato) + ")" )
             fogado = 0
+            adogato = 0
         elif adogato == 4:
             adogato_win += 1
             hanyadik_jatek = fogado_win + adogato_win
             print(str(hanyadik_jatek) + ". jatek | gyozets: adogato (" + str(fogado) + ":" + str(adogato) + ")" )
             adogato = 0
+            fogado = 0
         else:
             pass
         n += 1
+    print("adogato gyozelem: " + str(adogato_win))
+    print("fogado gyozelem: " + str(fogado_win))
     return 0
 
-feladat5() # nem a kert feladat
+feladat5() # nem a kert feladat e nem is jo xdd
 
 class Játék:
     def __init__(self, állás, adogatoNev, fogadoNev, ):
+        pass

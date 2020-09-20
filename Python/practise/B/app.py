@@ -1,22 +1,16 @@
+from userClass import User
+from QoL import PATH, DB_PATH, USERFILES_PATH, debug
+from utils import setup
+
 """
+TODO 
+    create DB in DB_PATH automatically
+    create files for users in USERFILES_PATH
+    salt passwords
 
-import math
-
-a = int(input("a: "))
-b = int(input("b: "))
-c = int(input("c: "))
-D = b**2 - 4*a*c
-
-
-
-if a != 0:
 """
+setup()
 
-
-
-név = input("neved: ")
-
-nev = "martin"
-
-if nev == név:
-    print("hello martin")
+# me = User("Beno", "asd")
+# me.register(me.username, me.password)
+# me.login(me.username, me.password)
