@@ -1,14 +1,17 @@
-from QoL import PATH, DB_PATH, debug
+from QoL import PATH, DB, debug
 import os
 import json
 
+
 def setup():
-    try: 
+    try:
         os.mkdir(PATH + "\\database")
         os.mkdir(PATH + "\\userFiles")
+        debug("SETUP | clreated DB, USER_FILES dirs")
     except FileExistsError:
         pass
-    
-    if os.stat(DB_PATH).st_size == 0:
-        with open(DB_PATH, "w") as db:
+    with open(DB, "a+"):
+        pass
+    if os.stat(DB).st_size == 0:
+        with open(DB, "w") as db:
             json.dumps(db.write("{}"))

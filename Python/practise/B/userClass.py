@@ -1,47 +1,58 @@
+from QoL import PATH, DB, USERFILES_PATH, debug
 from timeit import default_timer as timer
-from QoL import PATH, DB_PATH, USERFILES_PATH, debug
+from security import Sec
 import json
+import os
+
 
 class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        
 
     def inDB(self, username):
         """
         Checks wether username is already taken
         """
-        with open(DB_PATH, "r") as database:
+        with open(DB, "r") as database:
             dbContents = json.loads(database.read())
         if self.username in dbContents:
             return True
         else:
             return False
 
+    def makeUserFile(self, username):
+        with open(USERFILES_PATH + self.username + ".json", "a+") as userFile:
+            curly = json.dumps({})
+            userFile.write(curly)
 
     def register(self, username, password):
         """
-        Registers the user, stored in DB_PATH,
+        Registers the user, stored in DB,
         checks if username is already taken
         """
         if not self.inDB(self.username):
-            with open(DB_PATH, "r") as database:
+            self.makeUserFile(self.username)
+            with open(DB, "r") as database:
                 dbContents = json.loads(database.read())
-            dbContents.update({self.username: self.password})
-            with open(DB_PATH, "w") as database:
+            self.password = Sec(self.username, self.password)
+            self.password, self.salt = self.password.encrypt(self.password)
+            dbContents.update({self.username: [self.password, self.salt]})
+            with open(DB, "w") as database:
                 updatedDB = json.dumps(dbContents, sort_keys=True, indent=4)
                 database.write(updatedDB)
-            debug("REG | username : " + self.username + ", password: " + self.password)
+            debug("REG | username : " + self.username +
+                  ", password: " + self.password[:8])
         else:
             debug("REG | user " + self.username + " already in database")
 
-
     def login(self, username, password):
         if self.inDB(self.username):
-            with open(DB_PATH, "r") as database:
+            with open(DB, "r") as database:
                 dbContents = json.loads(database.read())
-            if self.password == dbContents[self.username]:
+            pw = Sec(self.username, self.password)
+            self.password = pw.decrypt(self.username, self.password)
+            if self.password == dbContents[self.username][0]:
                 debug("LOGIN | " + self.username + " SUCCESS")
                 return True
             else:
@@ -51,6 +62,13 @@ class User:
             debug("LOGIN | " + self.username + " NOT FOUND")
             return False
 
-
-
-            
+    def deleteUser(self, username):
+        with open(DB, "r") as database:
+            with open(DB, "r") as database:
+                dbContents = json.loads(database.read())
+                del dbContents[self.username]
+            with open(DB, "w") as database:
+                updatedDB = json.dumps(dbContents, sort_keys=True, indent=4)
+                database.write(updatedDB)
+            os.remove(USERFILES_PATH + self.username + ".json")
+            debug("DEL | username: " + self.username)
