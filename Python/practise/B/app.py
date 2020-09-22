@@ -5,14 +5,23 @@ from utils import setup
 
 """
 TODO 
-    create DB in DB automatically
-    create files for users in USERFILES_PATH
-    salt passwords
+DONE    create DB in DB automatically
+DONE    create files for users in USERFILES_PATH
+DONE    salt passwords
+DONE    salt and hash text input
+    decipher stored text
+    create UI
+    maybe add img support
 
 """
 setup()
-# me = User("Gote", "asd")
-me = User("Beno", "asd")
-# me.register(me.username, me.password)
-# me.login(me.username, me.password)
-me.deleteUser(me.username)
+
+def testAcc(UN, PW):
+    user = User(UN, PW)
+    user.register(user.username, user.password)
+    user.loggedIn(user.username, user.password)
+    user.addText(user.username, "sample text")
+    user.deleteUser(user.username)
+
+
+testAcc("Beno", "asd")

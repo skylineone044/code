@@ -23,8 +23,8 @@ class User:
 
     def makeUserFile(self, username):
         with open(USERFILES_PATH + self.username + ".json", "a+") as userFile:
-            curly = json.dumps({})
-            userFile.write(curly)
+            bracket = json.dumps([])
+            userFile.write(bracket)
 
     def register(self, username, password):
         """
@@ -46,7 +46,7 @@ class User:
         else:
             debug("REG | user " + self.username + " already in database")
 
-    def login(self, username, password):
+    def loggedIn(self, username, password):
         if self.inDB(self.username):
             with open(DB, "r") as database:
                 dbContents = json.loads(database.read())
@@ -72,3 +72,10 @@ class User:
                 database.write(updatedDB)
             os.remove(USERFILES_PATH + self.username + ".json")
             debug("DEL | username: " + self.username)
+
+    def addText(self, username, text):
+        textToAdd = Sec(self.username, self.password)
+        hashedText = textToAdd.cipher(self.username, text)
+        with open(USERFILES_PATH + self.username + ".json", "w") as userFile:
+            userFile.write(json.dumps(hashedText, indent=4))
+        debug("ADDTXT | SUCCESSFUL")
