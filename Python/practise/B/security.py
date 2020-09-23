@@ -1,4 +1,4 @@
-from QoL import USERFILES_PATH, SALT_LENGTH, DB, debug
+from QoL import USERFILES_PATH, SALT_LENGTH, DB, CHAR_FILE, debug
 import hashlib
 import random
 import json
@@ -80,12 +80,42 @@ class Sec:
         with open(DB, "r") as database:
             dbContents = json.loads(database.read())
         self.salt = dbContents[self.username][1]
-        with open(USERFILES_PATH + self.username + ".json") as userFile:
+        with open(USERFILES_PATH + "\\" +self.username + "\\" + self.username + ".json") as userFile: # this is utterly fucking retarded but im not doing a circular import
             userFileData = json.loads(userFile.read())
+        with open(CHAR_FILE, "r") as charFile:
+            charList = json.loads(charFile.read())
         while n < len(self.text):
+            if not self.text[n] in charList:
+                charList.append(self.text[n])
             char = (self.text[n] + self.salt).encode('utf-8')
             char = hashlib.sha256(char).hexdigest()
             userFileData.append(char)
             n += 1
+        with open(CHAR_FILE, "w") as charFile:
+            charFile.write(json.dumps(sorted(charList), indent=4))
         debug("CIP | SUCCESFUL")
         return userFileData
+    
+    def decipher(self, username, textLocation):
+        with open(DB, "r") as database:
+            dbContents = json.loads(database.read())
+        self.salt = dbContents[self.username][1]
+        with open(textLocation, "r") as userText:
+            userText = json.loads(userText.read())
+        with open(CHAR_FILE, "r") as charFile:
+            charList = json.loads(charFile.read())
+        n = 0
+        chArr = {}
+        while n < len(charList):
+            char = charList[n]
+            saltedChar = (str(char) + str(self.salt)).encode('utf-8')
+            hashedChar = hashlib.sha256(saltedChar).hexdigest()
+            if not hashedChar in chArr:
+                chArr.update({hashedChar : char})
+            n += 1
+        clearText = ""
+        k = 0
+        while k < len(userText):
+            clearText += chArr[userText[k]] 
+            k += 1
+        return clearText

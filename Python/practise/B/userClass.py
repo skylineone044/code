@@ -1,6 +1,7 @@
 from QoL import PATH, DB, USERFILES_PATH, debug
 from timeit import default_timer as timer
 from security import Sec
+import shutil
 import json
 import os
 
@@ -9,6 +10,7 @@ class User:
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.filePath = USERFILES_PATH + self.username + "\\"
 
     def inDB(self, username):
         """
@@ -22,7 +24,8 @@ class User:
             return False
 
     def makeUserFile(self, username):
-        with open(USERFILES_PATH + self.username + ".json", "a+") as userFile:
+        os.mkdir(USERFILES_PATH + "\\" + self.username)
+        with open(self.filePath + self.username + ".json", "a+") as userFile:
             bracket = json.dumps([])
             userFile.write(bracket)
 
@@ -70,12 +73,21 @@ class User:
             with open(DB, "w") as database:
                 updatedDB = json.dumps(dbContents, sort_keys=True, indent=4)
                 database.write(updatedDB)
-            os.remove(USERFILES_PATH + self.username + ".json")
+            shutil.rmtree(USERFILES_PATH + self.username)
             debug("DEL | username: " + self.username)
 
     def addText(self, username, text):
         textToAdd = Sec(self.username, self.password)
         hashedText = textToAdd.cipher(self.username, text)
-        with open(USERFILES_PATH + self.username + ".json", "w") as userFile:
+        with open(self.filePath + self.username + ".json", "w") as userFile:
             userFile.write(json.dumps(hashedText, indent=4))
         debug("ADDTXT | SUCCESSFUL")
+    
+
+    def showText(self, username):
+        stuff = Sec(self.username, self.password)
+        cleanText = stuff.decipher(self.username, self.filePath + self.username + ".json")
+        print(cleanText)
+
+    def addTimeStamp(self, username):
+        pass

@@ -18,10 +18,12 @@ setup()
 
 def testAcc(UN, PW):
     user = User(UN, PW)
-    user.register(user.username, user.password)
-    user.loggedIn(user.username, user.password)
-    user.addText(user.username, "sample text")
+    # user.register(user.username, user.password)
+    # user.loggedIn(user.username, user.password)
+    # user.addText(user.username, "asdasd uagfuskldcví75sdfsö89vöí8")
     user.deleteUser(user.username)
+    # user.showText(UN)
 
 
-testAcc("Beno", "asd")
+testAcc("Gote", "asd")
+
