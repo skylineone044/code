@@ -24,7 +24,7 @@ class User:
             return False
 
     def makeUserFile(self, username):
-        os.mkdir(USERFILES_PATH + "\\" + self.username)
+        os.mkdir(USERFILES_PATH + self.username)
         with open(self.filePath + self.username + ".json", "a+") as userFile:
             bracket = json.dumps([])
             userFile.write(bracket)
@@ -82,11 +82,11 @@ class User:
         with open(self.filePath + self.username + ".json", "w") as userFile:
             userFile.write(json.dumps(hashedText, indent=4))
         debug("ADDTXT | SUCCESSFUL")
-    
 
     def showText(self, username):
         stuff = Sec(self.username, self.password)
-        cleanText = stuff.decipher(self.username, self.filePath + self.username + ".json")
+        cleanText = stuff.decipher(
+            self.username, self.filePath + self.username + ".json")
         print(cleanText)
 
     def addTimeStamp(self, username):
