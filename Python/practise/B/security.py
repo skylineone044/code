@@ -1,4 +1,5 @@
 from QoL import USERFILES_PATH, SALT_LENGTH, DB, CHAR_FILE, debug
+from datetime import date, datetime
 import hashlib
 import random
 import json
@@ -17,6 +18,7 @@ class Sec:
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.filePath = USERFILES_PATH + self.username + "\\"
 
     def encrypt(self, password):
         """
@@ -64,6 +66,19 @@ class Sec:
         pw = hashlib.sha256(pw).hexdigest()
         return pw
 
+    def timeStamp(self, username):
+        todaysDate = date.today().strftime("%B %d %Y")
+        currTime = datetime.now().strftime("%H:%M:%S")
+        with open(self.filePath + "dateFile.json", "r") as dateFile:
+            dateData = json.loads(dateFile.read())
+        if todaysDate in dateData:
+            return currTime + " | "
+        else:
+            with open(self.filePath + "dateFile.json", "w") as dateFile:
+                dateFile.write(json.dumps(str(todaysDate)))
+            fullDate = "\n" + str(todaysDate) + "\n" + str(currTime) + " | "
+            return fullDate
+
     def cipher(self, username, text):
         """
         hashes text+user's salt together for added security
@@ -76,7 +91,7 @@ class Sec:
             List of hashed characters, each char as an element
         """
         n = 0
-        self.text = text + "\n"
+        self.text = self.timeStamp(self.username) + text + "\n"
         with open(DB, "r") as database:
             dbContents = json.loads(database.read())
         self.salt = dbContents[self.username][1]

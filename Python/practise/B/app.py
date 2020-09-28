@@ -5,6 +5,7 @@ from security import Sec
 from userClass import User
 from utils import setup
 
+
 """
 TODO 
 DONE    create DB in DB automatically
@@ -23,9 +24,10 @@ def testAcc(UN, PW):
     user = User(UN, PW)
     # user.register(user.username, user.password)
     # user.loggedIn(user.username, user.password)
-    # user.addText(user.username, "")
-    # user.deleteUser(user.username)
+    # user.addText(user.username, "yeah boiiiiii")
+    user.deleteUser(user.username)
     # user.showText(UN)
 
 
 testAcc("asd", "asd")
+

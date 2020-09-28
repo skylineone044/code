@@ -28,6 +28,8 @@ class User:
         with open(self.filePath + self.username + ".json", "a+") as userFile:
             bracket = json.dumps([])
             userFile.write(bracket)
+        with open(self.filePath + "\\dateFile.json", "a+") as dateFile:
+            dateFile.write(json.dumps([]))
 
     def register(self, username, password):
         """
@@ -89,5 +91,5 @@ class User:
             self.username, self.filePath + self.username + ".json")
         print(cleanText)
 
-    def addTimeStamp(self, username):
-        pass
+
+            
