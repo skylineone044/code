@@ -4,6 +4,9 @@ import json
 
 
 def setup():
+    """
+    sets up necessary directories 
+    """
     try:
         os.mkdir(PATH + "\\database")
         os.mkdir(PATH + "\\userFiles")

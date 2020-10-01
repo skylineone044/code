@@ -95,7 +95,8 @@ class Sec:
         with open(DB, "r") as database:
             dbContents = json.loads(database.read())
         self.salt = dbContents[self.username][1]
-        with open(USERFILES_PATH + "\\" +self.username + "\\" + self.username + ".json") as userFile: # this is utterly fucking retarded but im not doing a circular import
+        # this is utterly fucking retarded but im not doing a circular import
+        with open(USERFILES_PATH + "\\" + self.username + "\\" + self.username + ".json") as userFile:
             userFileData = json.loads(userFile.read())
         with open(CHAR_FILE, "r") as charFile:
             charList = json.loads(charFile.read())
@@ -110,8 +111,20 @@ class Sec:
             charFile.write(json.dumps(sorted(charList), indent=4))
         debug("CIP | SUCCESFUL")
         return userFileData
-    
+
     def decipher(self, username, textLocation):
+        """
+        constructs a dictionary of CHAR_FILE characters do decipher text
+        from textLocation
+
+        Args:
+            username to know which file to open
+            textLocation is dumb but its for the same reason lol
+
+        Returns:
+            deciphered string of text, ready to be read
+        """
+
         with open(DB, "r") as database:
             dbContents = json.loads(database.read())
         self.salt = dbContents[self.username][1]
@@ -126,11 +139,11 @@ class Sec:
             saltedChar = (str(char) + str(self.salt)).encode('utf-8')
             hashedChar = hashlib.sha256(saltedChar).hexdigest()
             if not hashedChar in chArr:
-                chArr.update({hashedChar : char})
+                chArr.update({hashedChar: char})
             n += 1
         clearText = ""
         k = 0
         while k < len(userText):
-            clearText += chArr[userText[k]] 
+            clearText += chArr[userText[k]]
             k += 1
         return clearText

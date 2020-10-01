@@ -13,8 +13,10 @@ DONE    create files for users in USERFILES_PATH
 DONE    salt passwords
 DONE    salt and hash text input
 DONE    decipher stored text
-    create UI
+CANCELLED    create UI
+DONE    add timestamps
     maybe add img support
+    encrypt timestamps in datefile
 
 """
 setup()

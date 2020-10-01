@@ -24,6 +24,12 @@ class User:
             return False
 
     def makeUserFile(self, username):
+        """
+        creates user's directory and files
+
+        Args:
+            username to know which filename to use
+        """
         os.mkdir(USERFILES_PATH + self.username)
         with open(self.filePath + self.username + ".json", "a+") as userFile:
             bracket = json.dumps([])
@@ -52,6 +58,16 @@ class User:
             debug("REG | user " + self.username + " already in database")
 
     def loggedIn(self, username, password):
+        """
+        determines whether an user is registered and if so
+        whether their password is correct
+
+        Args:
+            username, password for obvious reasons
+        
+        Returns:
+            True or False based on the entered password
+        """
         if self.inDB(self.username):
             with open(DB, "r") as database:
                 dbContents = json.loads(database.read())
@@ -68,6 +84,13 @@ class User:
             return False
 
     def deleteUser(self, username):
+        """
+        deletes the user's main directory, along with removing them
+        from the database
+
+        Args:
+            username to decide which user to delete
+        """
         with open(DB, "r") as database:
             with open(DB, "r") as database:
                 dbContents = json.loads(database.read())
@@ -79,6 +102,13 @@ class User:
             debug("DEL | username: " + self.username)
 
     def addText(self, username, text):
+        """
+        appends the user's json file with secured text
+
+        Args:
+            username to locate file
+            text to hash and save
+        """
         textToAdd = Sec(self.username, self.password)
         hashedText = textToAdd.cipher(self.username, text)
         with open(self.filePath + self.username + ".json", "w") as userFile:
@@ -86,6 +116,12 @@ class User:
         debug("ADDTXT | SUCCESSFUL")
 
     def showText(self, username):
+        """
+        deciphers and prints user's text
+
+        Args:
+            username to locate file
+        """
         stuff = Sec(self.username, self.password)
         cleanText = stuff.decipher(
             self.username, self.filePath + self.username + ".json")
