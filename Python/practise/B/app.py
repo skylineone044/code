@@ -7,7 +7,7 @@ from utils import setup
 
 
 """
-TODO 
+TODO
 DONE    create DB in DB automatically
 DONE    create files for users in USERFILES_PATH
 DONE    salt passwords
@@ -17,6 +17,7 @@ CANCELLED    create UI
 DONE    add timestamps
     maybe add img support
     encrypt timestamps in datefile
+        retarded old me couldnt think ahead. cant use Sec: cipher
 
 """
 setup()
@@ -27,9 +28,8 @@ def testAcc(UN, PW):
     # user.register(user.username, user.password)
     # user.loggedIn(user.username, user.password)
     # user.addText(user.username, "yeah boiiiiii")
-    user.deleteUser(user.username)
-    # user.showText(UN)
+    # user.deleteUser(user.username)
+    user.showText(UN)
 
 
 testAcc("asd", "asd")
-

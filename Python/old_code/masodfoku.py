@@ -1,8 +1,8 @@
 import math  # importing math module
 
-a = int(input("Enter a: "))  # getting input for variable a
-b = int(input("Enter b: "))  # getting input for variable b
-c = int(input("Enter c: "))  # getting input for variable c
+a = float(input("Enter a: "))  # getting input for variable a
+b = float(input("Enter b: "))  # getting input for variable b
+c = float(input("Enter c: "))  # getting input for variable c
 D = b ** 2 - 4 * a * c  # defining the discriminant (from now on referred to as "D")
 minuszb = int(-1 * b)   # defining b times minus one
 
@@ -10,8 +10,8 @@ if a != 0:  # checking wether a is equal to zero
 
     if D > 0:  # checking wether D is greater than zero
         print("D is greater than 0 (" + str(D) + ").")  # printing that D is greater than zero and its value
-        pluszSzamlalo = int(minuszb + math.sqrt(D))  # declaring the positive counter variable
-        minuszSzamlalo = int(minuszb - math.sqrt(D))  # declaring the negative counter variable
+        pluszSzamlalo = float(minuszb + math.sqrt(D))  # declaring the positive counter variable
+        minuszSzamlalo = float(minuszb - math.sqrt(D))  # declaring the negative counter variable
         nevezo = 2 * a  # declaring the denominator variable
         x1 = pluszSzamlalo / nevezo  # calculating the value of x1
         x2 = minuszSzamlalo / nevezo  # calculating the value of x2
@@ -20,7 +20,7 @@ if a != 0:  # checking wether a is equal to zero
 
     elif D == 0:  # checking wether D is equal to zero
         print("D is equal to 0.")  # printing the value of D
-        Szamlalo = int(minuszb + math.sqrt(D))  # declaring the counter variable
+        Szamlalo = float(minuszb + math.sqrt(D))  # declaring the counter variable
         nevezo = 2 * a  # declaring the denominator variable
         x = Szamlalo / nevezo  # calculating the value of x
         print("X = " + str(x) + "  (" + str(Szamlalo) + "/" + str(nevezo) + ")")  # printing the value of x

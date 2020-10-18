@@ -1,7 +1,7 @@
 import os
 
 DEBUG = True
-PATH = os.getcwd() + "\\Python\\practise\\B"
+PATH = os.getcwd()
 DB = PATH + "\\database\\database.json"
 USERFILES_PATH = PATH + "\\userFiles\\"
 SALT_LENGTH = 10

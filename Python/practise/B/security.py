@@ -29,7 +29,7 @@ class Sec:
 
         Returns:
             pw - (password mixed with salt) hashed
-            salt - the random string of characters 
+            salt - the random string of characters
         """
         n = 0
         salt = ""
