@@ -1,0 +1,5 @@
+[
+    ["Sounds", "mp3", "wav", "pcm", "aiff", "aac", "ogg", "wma", "flac", "alac"],
+    ["Images", "png", "jpg", "jpeg", "tiff", "psd", "bmp", "gif"],
+    ["Compressed files", "zip", "gz", "rar"]
+]

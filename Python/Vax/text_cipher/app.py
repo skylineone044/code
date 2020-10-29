@@ -83,7 +83,8 @@ def cheatSheet():
 
 
 def cleanUp():
-    os.remove(FILE_NAME)
+    with open(FILE_NAME, "w") as f:
+        f.write("")
 
 
 def decipher():
