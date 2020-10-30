@@ -11,6 +11,13 @@ DONE sort files by extension, move them to Extension// folder whitch is created
     maybe group similar file types like png with jpg and txt with json
 """
 
+# you probably should pass these in an argument,
+# so you can e.g. $ ./app.py /home/name/Desktop group debug
+#                 $ ./app.py /home/name/Desktop debug
+#                 $ ./app.py /home/name/Desktop group
+#                 $ ./app.py /home/name/Desktop
+# wouldn't that be great?
+
 DEBUG = True
 # GROUPING is a boolean that decides wether files should be grouped by category
 # Eg.: Images(DIR)/funnyCat.jpg, funnierCat.png
@@ -18,6 +25,7 @@ DEBUG = True
 GROUPING = True
 # DIR_LOCATION is the path to the folder/directory that you'd like to organize
 # Eg.: "C:/Downloads"
+# you probably should pass this in an argument
 DIR_LOCATION = "/home/skyline/Desktop/test"
 FILES_IN_DIR = os.listdir(DIR_LOCATION)
 
@@ -98,17 +106,21 @@ def mainLoop():
                 moveFile(DIR_LOCATION+"/"+file, DIR_LOCATION+"/"+ext)
     else:
         # SPHAGETTI UNDER CONSTRUCTION
-        for file in FILES_IN_DIR:
+        for file in FILES_IN_DIR:  # run through all fles in the directory
             ext = fileExtension(file)
-            found_extension = False
-            for appList in AppPairs():
-                if ext in appList:
-                    found_extension = True
+            known_extension = False
+            for appList in AppPairs():  # for each file run through all
+                # possible known / supported file
+                # extensions
+                if ext in appList:      # if any are found, then
+                    known_extension = True  # we acknolage that, for later
                     if not os.path.isdir(file):
                         createDir(appList[0])
                         moveFile(DIR_LOCATION+"/"+file,
                                  DIR_LOCATION+"/"+appList[0])
-            if not found_extension:
+            if not known_extension:     # if the current file extension was not
+                # in the list on supported ones, then
+                # we use the special case
                 createDir(ext)
                 if not os.path.isdir(file):
                     moveFile(DIR_LOCATION+"/"+file, DIR_LOCATION+"/"+ext)
