@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import shutil
 import json
 import os
@@ -5,18 +6,19 @@ import os
 
 """
 TODO
-DONE sort files by extension, move them to Extension// folder whitch is created in parallel
-     maybe group similar file types like png with jpg and txt with json 
+DONE sort files by extension, move them to Extension// folder whitch is created
+    in parallel
+    maybe group similar file types like png with jpg and txt with json
 """
 
 DEBUG = True
 # GROUPING is a boolean that decides wether files should be grouped by category
-# Eg.: Images(DIR)\\funnyCat.jpg, funnierCat.png
-# and not: jpg(DIR)\\funnyCat.jpg | png(DIR)\\funnierCat.png
+# Eg.: Images(DIR)/funnyCat.jpg, funnierCat.png
+# and not: jpg(DIR)/funnyCat.jpg | png(DIR)/funnierCat.png
 GROUPING = True
 # DIR_LOCATION is the path to the folder/directory that you'd like to organize
-# Eg.: "C:\\Downloads"
-DIR_LOCATION = ""
+# Eg.: "C:/Downloads"
+DIR_LOCATION = "/home/skyline/Desktop/test"
 FILES_IN_DIR = os.listdir(DIR_LOCATION)
 
 
@@ -74,10 +76,10 @@ def moveFile(fileLocation, destination):
     args: fileLocation: path to a file to be moved\n
           destination: path where the file is desired to be moved\n
     """
-    filename = fileLocation.split("\\")
+    filename = fileLocation.split("/")
     try:
+        # checking wether fileLocation is a dir to avoid creating nested dirs
         if not os.path.isdir(fileLocation):
-            # checking wether fileLocation is a dir to avoid creating nested dirs
             shutil.move(fileLocation, destination)
             debug(f"SUCCESS:MOVEFILE {filename[-1]} moved to {destination}")
     except shutil.Error:
@@ -93,21 +95,23 @@ def mainLoop():
             createDir(ext)
             if not os.path.isdir(file):
                 # if file is not a directory we move it
-                moveFile(DIR_LOCATION+"\\"+file, DIR_LOCATION+"\\"+ext)
+                moveFile(DIR_LOCATION+"/"+file, DIR_LOCATION+"/"+ext)
     else:
-        #SPHAGETTI UNDER CONSTRUCTION
+        # SPHAGETTI UNDER CONSTRUCTION
         for file in FILES_IN_DIR:
             ext = fileExtension(file)
+            found_extension = False
             for appList in AppPairs():
                 if ext in appList:
+                    found_extension = True
                     if not os.path.isdir(file):
                         createDir(appList[0])
-                        moveFile(DIR_LOCATION+"\\"+file,
-                                 DIR_LOCATION+"\\"+appList[0])
-                else:
-                    createDir(ext)
-                    if not os.path.isdir(file):
-                        moveFile(DIR_LOCATION+"\\"+file, DIR_LOCATION+"\\"+ext)
+                        moveFile(DIR_LOCATION+"/"+file,
+                                 DIR_LOCATION+"/"+appList[0])
+            if not found_extension:
+                createDir(ext)
+                if not os.path.isdir(file):
+                    moveFile(DIR_LOCATION+"/"+file, DIR_LOCATION+"/"+ext)
     print("Organizing finished")
 
 
