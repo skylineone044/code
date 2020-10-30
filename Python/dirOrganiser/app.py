@@ -12,10 +12,10 @@ DONE sort files by extension, move them to Extension// folder whitch is created
 """
 
 # you probably should pass these in an argument,
-# so you can e.g. $ ./app.py /home/name/Desktop group debug
-#                 $ ./app.py /home/name/Desktop debug
-#                 $ ./app.py /home/name/Desktop group
-#                 $ ./app.py /home/name/Desktop
+# so you could do e.g. $ ./app.py /home/name/Desktop group debug
+#                      $ ./app.py /home/name/Desktop debug
+#                      $ ./app.py /home/name/Desktop group
+#                      $ ./app.py /home/name/Desktop
 # wouldn't that be great?
 
 DEBUG = True
